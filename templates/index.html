@@ -8,37 +8,67 @@
   <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
 </head>
 
-  <body>
+<body>
+
+  <div class="container">
     <h1>SignLingo</h1>
 
-    <h1>Video feed</h1>
-    <img src="{{ url_for('video_feed') }}" width="640" height="480" alt="Video">
+    <div class="row">
+      <div id="videoContainer">
+        <h2>Video Feed</h2>
+        <img src="{{ url_for('video_feed') }}" alt="Video">
+      </div>
+
+      <div id="wordContainer">
+        <h2>Word</h2>
+        <img id="wordImage" src="../static/asl_images/thumbs_up.jpg" alt="Description">
+        <button href="#" onClick="incrementCounter()">Next</button>
+      </div>
+    </div>
 
 
 
-  <div>
-    <h2>Word</h2>
-    <img id="wordImage" src="../static/asl_images/asl.jpg" alt="Description" width="640" height="480"></img>
-    <button onclick="nextWord()" class="next">Next</button>
   </div>
 
   <script>
 
+
     const imagePaths = [
       "../static/asl_images/asl.jpg",
-      "../static/asl_images/test.jpg"
+      "../static/asl_images/test.jpg",
+      "../static/asl_images/thumbs_up.jpg",
+      "../static/asl_images/thumbs_down.jpg",
+      "../static/asl_images/stop.jpg"
+
     ]
+
+    var image_dict = {
+      thumbs_up : "../static/asl_images/thumbs_up.jpg",
+      thumbs_down: "../static/asl_images/thumbs_down.jpg",
+      stop: "../static/asl_images/stop.jpg"
+    }
 
     let imageIndex = 0
 
     function nextWord() {
       const wordImage = document.getElementById('wordImage');
-
-      // Increment the index or reset to 0 if it reaches the end of the array
       imageIndex = (imageIndex + 1) % imagePaths.length;
-
-      // Update the src attribute with the new image path
       wordImage.src = imagePaths[imageIndex];
+    }
+
+    function incrementCounter() {
+      fetch('/button/')
+        .then(response => response.text())
+        .then(data => {
+          const imageName = data.trim();
+          if (image_dict.hasOwnProperty(imageName)) {
+            const wordImage = document.getElementById('wordImage');
+            wordImage.src = image_dict[imageName];
+          } else {
+            console.error('Invalid image name:', imageName);
+          }
+        })
+        .catch(error => console.error('Error:', error));
     }
   </script>
 

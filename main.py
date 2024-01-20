@@ -5,6 +5,14 @@ import cv2
 
 app = Flask(__name__)
 
+imageNames = [
+    "thumbs_up",
+    "thumbs_down",
+    "stop"
+]
+
+counter = 0
+
 @app.route('/')
 @app.route('/index')
 
@@ -13,6 +21,14 @@ def index():
 
 def generate_frames():
     yield from sign_language()
+
+@app.route('/button/')
+def button():
+    global counter
+    curr = imageNames[counter]
+    counter = (counter + 1) % len(imageNames)
+    return curr
+    
 
 
 @app.route('/video_feed')
