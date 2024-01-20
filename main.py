@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, Response
 from waitress import serve
+from signlang import sign_language
 
 app = Flask(__name__)
 
@@ -8,6 +9,13 @@ app = Flask(__name__)
 
 def index():
     return render_template('index.html')
+
+def generate_frames():
+    sign_language()
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == "__main__":

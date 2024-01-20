@@ -38,5 +38,9 @@ def sign_language():
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break
 
-        cap.release()
-        cv2.destroyAllWindows()
+            ret, jpeg = cv2.imencode('.jpg', image)
+            frame = jpeg.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+    cap.release()

@@ -8,13 +8,10 @@
   <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
 </head>
 
-<body>
-  <h1>SignLingo</h1>
+  <body>
+    <h1>SignLingo</h1>
+      <img src="{{ url_for('video_feed') }}" width="640" height="480" alt="Video">
 
-  <div>
-    <h2>Camera Feed</h2>
-    <video id="cameraFeed" width="640" height="480" autoplay></video>
-  </div>
 
 
   <div>
