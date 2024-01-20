@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SignLingo</title>
+  <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
+</head>
+
+<body>
+  <h1>SignLingo</h1>
+
+  <div>
+    <h2>Camera Feed</h2>
+    <video id="cameraFeed" width="640" height="480" autoplay></video>
+  </div>
+
+
+  <div>
+    <h2>Word</h2>
+    <img id="wordImage" src="../static/asl_images/asl.jpg" alt="Description" width="640" height="480"></img>
+    <button onclick="nextWord()" class="next">Next</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const video = document.getElementById('cameraFeed');
+
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(function (stream) {
+            video.srcObject = stream;
+            video.play();
+          })
+          .catch(function (error) {
+            console.error('Error accessing camera:', error);
+          });
+      } else {
+        console.error('getUserMedia is not supported in this browser');
+      }
+    });
+
+    const imagePaths = [
+      "../static/asl_images/asl.jpg",
+      "../static/asl_images/test.jpg"
+    ]
+
+    let imageIndex = 0
+
+    function nextWord() {
+      const wordImage = document.getElementById('wordImage');
+
+      // Increment the index or reset to 0 if it reaches the end of the array
+      imageIndex = (imageIndex + 1) % imagePaths.length;
+
+      // Update the src attribute with the new image path
+      wordImage.src = imagePaths[imageIndex];
+    }
+  </script>
+
+</body>
+
+</html>
