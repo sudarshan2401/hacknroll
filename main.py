@@ -17,8 +17,8 @@ counter = 0
 def index():
     return render_template('index.html')
 
-def generate_frames():
-    yield from sign_language()
+def generate_frames(curr):
+    yield from sign_language(curr)
 
 @app.route('/button/')
 def button():
@@ -29,9 +29,9 @@ def button():
     
 
 
-@app.route('/video_feed')
-def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/video_feed/<curr>')
+def video_feed(curr):
+    return Response(generate_frames(curr), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == "__main__":

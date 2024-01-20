@@ -16,7 +16,7 @@
     <div class="row">
       <div id="videoContainer">
         <h2>Video Feed</h2>
-        <img src="{{ url_for('video_feed') }}" alt="Video">
+        <img src="{{ url_for('video_feed', curr= 'thumbs_up') }}" alt="Video" id="videoFeed">
       </div>
 
       <div id="wordContainer">
@@ -55,6 +55,9 @@
       imageIndex = (imageIndex + 1) % imagePaths.length;
       wordImage.src = imagePaths[imageIndex];
     }
+    function updateVideoFeed(currValue) {
+        document.getElementById('videoFeed').src = "{{ url_for('video_feed', curr='') }}" + currValue;
+    }
 
     function incrementCounter() {
       fetch('/button/')
@@ -64,6 +67,7 @@
           if (image_dict.hasOwnProperty(imageName)) {
             const wordImage = document.getElementById('wordImage');
             wordImage.src = image_dict[imageName];
+            updateVideoFeed(imageName)
           } else {
             console.error('Invalid image name:', imageName);
           }

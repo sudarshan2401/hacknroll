@@ -5,7 +5,7 @@ import numpy as np
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
-def sign_language():
+def sign_language(curr):
     cap = cv2.VideoCapture(0)
     # Setup mediapipe instance
     with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
@@ -28,7 +28,10 @@ def sign_language():
                 # Render detections
                 for hand_landmarks in results.multi_hand_landmarks:
                     handSign = getHandSign(hand_landmarks)
-                    print(getHandSign(hand_landmarks))
+                    print(curr)
+                    if handSign == curr:
+                        print("mf works")
+                    # print(getHandSign(hand_landmarks))
                     mp_drawing.draw_landmarks(image, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS,
                                           mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2, circle_radius=2),
                                           mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2)
@@ -55,16 +58,16 @@ def getHandSign(hand_landmarks) :
 
     # Check if hand is in OK gesture
     if thumb_finger_tip.y < index_finger_tip.y < middle_finger_tip.y < ring_finger_tip.y < pinky_finger_tip.y:
-        return "Okay"
+        return "thumbs_up"
 
     elif thumb_finger_tip.y > index_finger_tip.y > middle_finger_tip.y > ring_finger_tip.y > pinky_finger_tip.y:
-        return "Dislike"
+        return "thumbs_down"
     # Check if hand is in Stop gesture
     elif thumb_finger_tip.x > index_finger_tip.x > middle_finger_tip.x:
         if (hand_landmarks.landmark[2].x > hand_landmarks.landmark[5].x) and (
                 hand_landmarks.landmark[3].x > hand_landmarks.landmark[5].x) and (
                 hand_landmarks.landmark[4].x > hand_landmarks.landmark[5].x):
-            return "Stop"
+            return "stop"
         else:
             return "Not recognised"
     else:
