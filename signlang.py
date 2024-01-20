@@ -45,6 +45,8 @@ def sign_language(curr):
                                               )
 
             # Display the score on the frame
+            # Add rectangle to put score in
+            cv2.rectangle(image, (5, 50), (250, 115), (0, 0, 0), -1)  # Draw filled black rectangle
             cv2.putText(image, f"Score: {score}", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (255, 255, 255), 6, cv2.LINE_AA)
 
             ret, jpeg = cv2.imencode('.jpg', image)
