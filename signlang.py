@@ -34,7 +34,7 @@ def sign_language(curr):
                     hand_sign = getHandSign(hand_landmarks)
                     print(curr)
                     if hand_sign == curr and hand_sign != prev_sign:
-                        cv2.putText(image, f"Correct Sign: {curr}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 255, 0), 10, cv2.LINE_AA)
+                        cv2.putText(image, f"Correct Sign: {curr}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 10, cv2.LINE_AA)
                         print("Correct sign detected: ", curr)
                         score += 1
                         prev_sign = curr
