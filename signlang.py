@@ -17,7 +17,7 @@ def sign_language():
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image.flags.writeable = False
 
-            # Make detection
+            # Make detection wrd
             results = hands.process(image)
 
             # Recolor back to BGR
