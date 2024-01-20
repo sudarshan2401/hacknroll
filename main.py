@@ -1,7 +1,5 @@
 from flask import Flask, render_template, Response
-from waitress import serve
 from signlang import sign_language
-import cv2
 
 app = Flask(__name__)
 

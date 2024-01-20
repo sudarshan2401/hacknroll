@@ -2,15 +2,13 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
+mp_drawing = mp.solutions.drawing_utils
+mp_hands = mp.solutions.hands
 
 def sign_language():
-    mp_drawing = mp.solutions.drawing_utils
-    mp_hands = mp.solutions.hands
-
     cap = cv2.VideoCapture(0)
-
     # Setup mediapipe instance
-    with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
+    with mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
         while cap.isOpened():
             ret, frame = cap.read()
 
@@ -29,12 +27,14 @@ def sign_language():
             if results.multi_hand_landmarks:
                 # Render detections
                 for hand_landmarks in results.multi_hand_landmarks:
+                    handSign = getHandSign(hand_landmarks)
+                    print(getHandSign(hand_landmarks))
                     mp_drawing.draw_landmarks(image, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS,
                                           mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2, circle_radius=2),
                                           mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2)
                                           )
 
-            cv2.imshow('Mediapipe Feed', image)
+            # cv2.imshow('Mediapipe Feed', image)
 
             # if cv2.waitKey(10) & 0xFF == ord('q'):
             #     break
@@ -44,4 +44,20 @@ def sign_language():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-    # cap.release()
+    cap.release()
+
+def getHandSign(hand_landmarks) :
+    thumb_finger_tip = hand_landmarks.landmark[4]
+    index_finger_tip = hand_landmarks.landmark[8]
+    middle_finger_tip = hand_landmarks.landmark[12]
+    ring_finger_tip = hand_landmarks.landmark[16]
+    pinky_finger_tip = hand_landmarks.landmark[20]
+
+    # Check if hand is in OK gesture
+    if thumb_finger_tip.y < index_finger_tip.y < middle_finger_tip.y < ring_finger_tip.y < pinky_finger_tip.y:
+        return "Okay"
+
+    elif thumb_finger_tip.y > index_finger_tip.y > middle_finger_tip.y > ring_finger_tip.y > pinky_finger_tip.y:
+        return "Dislike"
+    else:
+        return "Not recognised"
