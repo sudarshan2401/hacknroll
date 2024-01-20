@@ -10,7 +10,9 @@
 
   <body>
     <h1>SignLingo</h1>
-      <img src="{{ url_for('video_feed') }}" width="640" height="480" alt="Video">
+
+    <h1>Video feed</h1>
+    <img src="{{ url_for('video_feed') }}" width="640" height="480" alt="Video">
 
 
 
@@ -21,22 +23,6 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-      const video = document.getElementById('cameraFeed');
-
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-          .then(function (stream) {
-            video.srcObject = stream;
-            video.play();
-          })
-          .catch(function (error) {
-            console.error('Error accessing camera:', error);
-          });
-      } else {
-        console.error('getUserMedia is not supported in this browser');
-      }
-    });
 
     const imagePaths = [
       "../static/asl_images/asl.jpg",
