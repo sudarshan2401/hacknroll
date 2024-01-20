@@ -59,5 +59,13 @@ def getHandSign(hand_landmarks) :
 
     elif thumb_finger_tip.y > index_finger_tip.y > middle_finger_tip.y > ring_finger_tip.y > pinky_finger_tip.y:
         return "Dislike"
+    # Check if hand is in Stop gesture
+    elif thumb_finger_tip.x > index_finger_tip.x > middle_finger_tip.x:
+        if (hand_landmarks.landmark[2].x > hand_landmarks.landmark[5].x) and (
+                hand_landmarks.landmark[3].x > hand_landmarks.landmark[5].x) and (
+                hand_landmarks.landmark[4].x > hand_landmarks.landmark[5].x):
+            return "Stop"
+        else:
+            return "Not recognised"
     else:
         return "Not recognised"
