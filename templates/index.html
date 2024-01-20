@@ -22,8 +22,14 @@
       <div id="wordContainer">
         <h2>Word</h2>
         <img id="wordImage" src="../static/asl_images/thumbs_up.jpg" alt="Description">
-        <button href="#" onClick="incrementCounter()">Next</button>
+        <h2 id="score">Score :0</h2>
       </div>
+
+      <div id="scoreChangePopup" class="popup" style="display: none;">
+        <p id="popupText"></p>
+        <button onclick="incrementCounter()">Next Word</button>
+      </div>
+      
     </div>
 
 
@@ -50,6 +56,42 @@
 
     let imageIndex = 0
 
+    function updateScore() {
+      fetch('/get_score')
+        .then(response => response.json())
+        .then(data => {
+          // Update the score on the webpage
+          const scoreElement = document.getElementById('score');
+          const currentScore = parseInt(scoreElement.innerText.split(':')[1].trim(), 10);
+          const newScore = data.score;
+
+          if (newScore !== currentScore) {
+            // Display popup when the score changes
+            displayPopup(`Good Job!! Score: ${newScore}`);
+            // Update the score on the webpage
+            scoreElement.innerText = `Score: ${newScore}`;
+
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function displayPopup(text) {
+      // Display the popup
+      const popup = document.getElementById('scoreChangePopup');
+      const popupText = document.getElementById('popupText');
+      popupText.innerText = text;
+      popup.style.display = 'block';
+    }
+
+    function closePopup() {
+      // Close the popup when the OK button is clicked
+      const popup = document.getElementById('scoreChangePopup');
+      popup.style.display = 'none';
+    }
+
+    setInterval(updateScore, 1000);
+
     function nextWord() {
       const wordImage = document.getElementById('wordImage');
       imageIndex = (imageIndex + 1) % imagePaths.length;
@@ -68,6 +110,7 @@
             const wordImage = document.getElementById('wordImage');
             wordImage.src = image_dict[imageName];
             updateVideoFeed(imageName)
+            closePopup()
           } else {
             console.error('Invalid image name:', imageName);
           }
