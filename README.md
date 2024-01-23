@@ -23,11 +23,13 @@ SignLingo is a web application that uses computer vision to recognize hand signs
 git clone https://github.com/yourusername/SignLingo.git
 cd SignLingo
 ```
+
 2. Install the required Python packages:
 
 ```
 pip install -r requirements.txt
 ```
+
 3. Run the Flask application:
 
 ```
@@ -66,3 +68,4 @@ Sudarshan
 Nicholas
 
     Github: github.com/nicholascher
+    LinkedIn: linkedin.com/in/nicholascher/
